@@ -11,20 +11,20 @@ int main()
 
     GrayscaleImage output(targetWidth, targetHeight);
 
-    float sx = float(original.GetWidth()) / targetWidth, sy = float(original.GetHeight()) / targetHeight;
+    double sx = double(original.GetWidth()) / targetWidth, sy = double(original.GetHeight()) / targetHeight;
 
     for (int x = 0; x < targetWidth; x++)
     {
-        float tx = x * sx;
+        double tx = x * sx;
         
         for (int y = 0; y < targetHeight; y++)
         {
-            float ty = y * sy;
-            float ax = std::floor(tx), ay = std::floor(ty);
-            float bx = ax + 1, by = ay + 1;
-            float fx = tx - ax, fy = ty - ay;
+            double ty = y * sy;
+            double ax = std::floor(tx), ay = std::floor(ty);
+            double bx = ax + 1, by = ay + 1;
+            double fx = tx - ax, fy = ty - ay;
 
-            float value =
+            double value =
                 original(ax, ay) * fx * fy +
                 original(ax, by) * fx * (1 - fy) +
                 original(bx, ay) * (1 - fx) * fy +

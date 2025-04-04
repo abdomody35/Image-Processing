@@ -363,7 +363,7 @@ private:
 	int width, height;
 };
 
-void SaveHist(const GrayscaleImage &im, std::string filename, float scale = 0.05) {
+void SaveHist(const GrayscaleImage &im, std::string filename, double scale = 0.05) {
 	GrayscaleImage hist(256, 512);
 	std::vector<int> counts(256);
 
@@ -382,7 +382,7 @@ void SaveHist(const GrayscaleImage &im, std::string filename, float scale = 0.05
 	hist.Save(filename);
 }
 
-void SaveHist(const ColorImage &im, std::string filename, float scale = 0.05) {
+void SaveHist(const ColorImage &im, std::string filename, double scale = 0.05) {
 	ColorImage hist(768, 512);
 	std::vector<int> counts(768);
 
@@ -420,6 +420,6 @@ ColorImage::ColorImage(const GrayscaleImage &im) {
 	}
 }
 
-int car(float val, int limit) {
+int car(double val, int limit) {
 	return std::clamp((int)std::round(val), 0, limit);
 }

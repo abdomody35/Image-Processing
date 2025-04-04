@@ -9,7 +9,7 @@ int main()
 
     std::vector<int> counts(256);
 
-    float scale = 0.05;
+    double scale = 0.05;
 
     for (int y = 0; y < image.GetHeight(); y++)
     {

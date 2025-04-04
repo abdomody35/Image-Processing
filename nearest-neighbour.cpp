@@ -11,7 +11,7 @@ int main()
 
     GrayscaleImage output(targetWidth, targetHeight);
 
-    float sx = float(original.GetWidth()) / targetWidth, sy = float(original.GetHeight()) / targetHeight;
+    double sx = double(original.GetWidth()) / targetWidth, sy = double(original.GetHeight()) / targetHeight;
 
     for (int x = 0; x < targetWidth; x++)
     {
