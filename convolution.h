@@ -4,19 +4,22 @@
 #include "Image.h"
 #include <numeric>
 
-GrayscaleImage applyConvolution(GrayscaleImage &image, std::vector<std::vector<double>> kernel)
+GrayscaleImage applyConvolution(const GrayscaleImage &image, const std::vector<std::vector<double>> &kernel)
 {
-    GrayscaleImage output(image.GetWidth(), image.GetHeight());
-
+    int width = image.GetWidth();
+    int height = image.GetHeight();
     int dimension = kernel.size();
+    int kernelCenter = dimension / 2;
+    GrayscaleImage output(width, height);
 
-    for (int y = 0; y < output.GetHeight(); y++)
+    for (int y = 0; y < height; y++)
     {
-        for (int x = 0; x < output.GetWidth(); x++)
+        for (int x = 0; x < width; x++)
         {
-            if (x - dimension + 2 < 0 || y - dimension + 2 < 0)
+
+            if (x < kernelCenter || x >= width - kernelCenter || y < kernelCenter || y >= height - kernelCenter)
             {
-                output(x, y) == image(x, y);
+                output(x, y) = image(x, y);
                 continue;
             }
 
@@ -26,7 +29,10 @@ GrayscaleImage applyConvolution(GrayscaleImage &image, std::vector<std::vector<d
             {
                 for (int col = dimension - 1; col > -1; col--)
                 {
-                    value += image(x - row + 1, y - col + 1) * kernel[row][col];
+                    int imageX = x + col - kernelCenter;
+                    int imageY = y + row - kernelCenter;
+
+                    value += image(imageX, imageY) * kernel[row][col];
                 }
             }
 
@@ -37,13 +43,20 @@ GrayscaleImage applyConvolution(GrayscaleImage &image, std::vector<std::vector<d
     return output;
 }
 
-void normalizeKernel(std::vector<std::vector<double>> kernel)
+void normalizeKernel(std::vector<std::vector<double>> &kernel)
 {
     double sum = 0;
+
     for (const auto &row : kernel)
     {
         sum += std::accumulate(row.begin(), row.end(), 0.0);
     }
+
+    if (sum == 0)
+    {
+        return;
+    }
+
     for (auto &row : kernel)
     {
         for (auto &value : row)
