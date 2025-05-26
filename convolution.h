@@ -66,4 +66,4 @@ void normalizeKernel(std::vector<std::vector<double>> &kernel)
     }
 }
 
-#endif
+#endif // CONVOLUTION_H
