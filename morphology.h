@@ -162,4 +162,56 @@ GrayscaleImage applyXOR(const GrayscaleImage &image1, const GrayscaleImage &imag
     return output;
 }
 
+GrayscaleImage performHitAndMissTransform(const GrayscaleImage &image, const std::vector<std::vector<int>> &kernel)
+{
+    int width = image.GetWidth();
+    int height = image.GetHeight();
+    int dimension = kernel.size();
+    int kernelCenter = dimension / 2;
+    GrayscaleImage output(width, height);
+
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            bool truePixel = true;
+
+            for (int row = 0; row < dimension; row++)
+            {
+                for (int col = 0; col < dimension; col++)
+                {
+                    int imageX = x + col - kernelCenter, imageY = y + row - kernelCenter;
+
+                    if (imageX < 0 || imageX > width - 1 || imageY < 0 || imageY > height - 1)
+                    {
+                        if (kernel[row][col] == 1)
+                        {
+                            truePixel = false;
+                            break;
+                        }
+
+                        continue;
+                    }
+
+                    if ((kernel[row][col] == 1 && image(imageX, imageY) != 255) ||
+                        (kernel[row][col] == -1 && image(imageX, imageY) != 0))
+                    {
+                        truePixel = false;
+                        break;
+                    }
+                }
+
+                if (!truePixel)
+                {
+                    break;
+                }
+            }
+
+            output(x, y) = truePixel ? 255 : 0;
+        }
+    }
+
+    return output;
+}
+
 #endif // MORPHOLOGY_H
